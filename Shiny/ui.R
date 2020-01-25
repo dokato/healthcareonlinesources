@@ -12,6 +12,10 @@ shinyUI(
         fluidPage(
             uiOutput("home"),
             uiOutput("block_one"),
+            htmlOutput("exist"), br(),
+            htmlOutput("secure"), br(),
+            htmlOutput("tld"), br(),
+            htmlOutput("update"), br(),
             uiOutput("block_two")
         )
     #)
