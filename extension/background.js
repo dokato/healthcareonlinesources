@@ -19,6 +19,10 @@ function compareUrl(url, score, request){
     };
 }
 
+const views = chrome.extension.getViews({
+    type: "popup"
+});
+
 const url = chrome.runtime.getURL('data/info.json');
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {

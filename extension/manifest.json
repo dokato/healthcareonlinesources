@@ -14,8 +14,7 @@
     "default_popup": "popup.html",
     "default_title": "Start",
     "default_icon": {
-      "32": "images/icon32.png",
-      "128": "images/icon128.png"
+      "32": "images/icon-def.png"
     }
   },
   "background": {
