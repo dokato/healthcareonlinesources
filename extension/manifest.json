@@ -21,7 +21,7 @@
     "scripts": ["background.js"]
   },
   "permissions": [
-    "activeTab","tabs", "http://*/*"
+    "activeTab","tabs", "http://*/*", "storage"
   ],
   "web_accessible_resources": [
     "data/info.json"
