@@ -16,7 +16,8 @@ shinyUI(
             htmlOutput("secure"), br(),
             htmlOutput("tld"), br(),
             htmlOutput("update"), br(),
-            uiOutput("block_two")
+            uiOutput("block_two"), 
+            htmlOutput("score")
         )
     #)
 )
