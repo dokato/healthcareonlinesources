@@ -21,14 +21,6 @@ function compareUrl(url, score, request){
 
 const url = chrome.runtime.getURL('data/info.json');
 
-chrome.extension.onConnect.addListener(function(port) {
-    console.log("Connected .....");
-    port.onMessage.addListener(function(msg) {
-         console.log("message recieved" + msg);
-         port.postMessage("Hi Popup.js");
-    });
-});                    
-
 (function readJSON(){
     chrome.runtime.getPackageDirectoryEntry(function(root) {
         root.getFile("data/info.json", {}, function(fileEntry) {
