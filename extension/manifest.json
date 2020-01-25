@@ -1,0 +1,25 @@
+{
+  "name": "HelthNet Trust",
+  "version": "0.0.1",
+  "description": "This extension assesses trustfulness of medical sources.",
+  "icons": {
+    "32": "images/icon32.png",
+    "128": "images/icon128.png"
+  },
+  "content_scripts": [{
+    "matches": ["https://www.nhs.uk/"],
+    "js": ["content.js"]
+  }],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Start",
+    "default_icon": {
+      "32": "images/icon32.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "manifest_version": 2
+}
