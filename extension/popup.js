@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var test = document.getElementById("firstText").innerHTML;
-    document.getElementById("secondText").innerHTML=Math.random();
+    var test = document.getElementById("reminder").innerHTML;
+    document.getElementById("secondRow").innerHTML=Math.random();
 
 /* 
    chrome.tabs.query (

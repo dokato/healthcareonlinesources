@@ -1,5 +1,6 @@
 { 
-	"website1": 1,
-	"website2": 2,
-	"https://www.thesun.co.uk/" : 0
+	"https://www.thesun.co.uk/" : 0,
+	"https://www.nhs.uk/" : 10,
+	"https://www.nih.gov/": 10,
+	"https://ec.europa.eu/health/home_en": 10
 }
