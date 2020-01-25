@@ -1,1 +1,3 @@
-alert('This is good website')
+chrome.runtime.sendMessage({
+  url: window.location.href
+})

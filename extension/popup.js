@@ -1,4 +1,14 @@
-chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-    var url = tabs[0].url;
-    console.log("Great job");
+document.addEventListener('DOMContentLoaded', function () {
+    var test = document.getElementById("firstText").innerHTML;
+    document.getElementById("secondText").innerHTML=Math.random();
+
+/* 
+   chrome.tabs.query (
+        { currentWindow: true, active: true }, 
+        function(tabs) {
+            var activeTab = tabs[0];
+            var address = activeTab.url;
+            alert(JSON.stringify(address));
+    });
+*/
 });

@@ -7,7 +7,7 @@
     "128": "images/icon128.png"
   },
   "content_scripts": [{
-    "matches": ["https://www.nhs.uk/"],
+    "matches": ["<all_urls>"],
     "js": ["content.js"]
   }],
   "browser_action": {
@@ -18,8 +18,14 @@
       "128": "images/icon128.png"
     }
   },
+  "background": {
+    "scripts": ["background.js"]
+  },
   "permissions": [
-    "tabs"
+    "activeTab","tabs", "http://*/*"
+  ],
+  "web_accessible_resources": [
+    "data/info.json"
   ],
   "manifest_version": 2
 }
