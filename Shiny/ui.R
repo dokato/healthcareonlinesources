@@ -13,8 +13,10 @@ shinyUI(
         fluidPage(
             uiOutput("home"),
             uiOutput("block_one"),
-            div(align = "center",
+            div(class = 'col-sm-2'),
+            div(align = "center", class = 'col-sm-8',
               tagList(
+                
                 htmlOutput("exist"), br(),
                 htmlOutput("secure"), br(),
                 htmlOutput("tld"), br(),
@@ -23,8 +25,10 @@ shinyUI(
             ),
             uiOutput("block_two"),
             div(align = "center",
-              htmlOutput("score")
+              htmlOutput("score"), 
+              actionButton("load_up", "Submit")
             ),
+            
             br(),br(),br(),br()
     ),
     tags$footer(credits, align = "center", style = "

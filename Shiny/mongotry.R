@@ -14,9 +14,9 @@ save_data <- function(data) {
 
 load_data <- function() {
   db <- mongo(collection = collection_name,
-              url = paste0("mongodb+srv://what:",
+              url = paste0("mongodb+srv://abc:",
                            options()$mongo_password,
-                           "@abc-xze3x.mongodb.net/test?retryWrites=true&w=majority")
+                           "@cluster0-hzl4d.mongodb.net/test?retryWrites=true&w=majority")
   )
   data <- db$find()
   data

@@ -7,16 +7,16 @@ library(mongolite)
 
 options(shiny.sanitize.errors = FALSE)
 
-collection_name <- "test"
+collection_name <- "health_responses"
 
 save_data <- function(data) {
-  db <- mongo(collection = collection_name,
-              url = paste0("mongodb+srv://what:",
-                           options()$mongo_password,
-                           "@abc-xze3x.mongodb.net/test?retryWrites=true&w=majority")
-  )
-  data <- as.data.frame(t(data))
-  db$insert(data)
+    db <- mongo(collection = collection_name,
+                url = paste0("mongodb+srv://abc:",
+                             options()$mongo_password,
+                             "@cluster0-hzl4d.mongodb.net/test?retryWrites=true&w=majority")
+    )
+    data <- as.data.frame(t(data))
+    db$insert(data)
 }
 
 head_style <- "
@@ -55,11 +55,24 @@ shinyServer(function(input, output, session) {
     })
     
     observeEvent(input$block_one, {
-        #save_data(runif(5, 2.0, 7.5))
         output$block_one <- renderUI({ source("questions1.R", local = TRUE)$value })
+    })
+
+    
+    observeEvent(input$load_up, {
+        save_data(c(input$website, input$slider, input$question1))
+        showModal(modalDialog(
+            title = "Submitted!",
+            "Thanks",
+            easyClose = TRUE,
+            footer = NULL
+        ))
+        print("sent")
+        
     })
     
     webtext <- eventReactive(input$block_two, {
+        #raw_score(raw_score() + 1)
         req(input$website != "")
         input$website
     })
@@ -75,7 +88,8 @@ shinyServer(function(input, output, session) {
     output$secure = renderText({
         site = webtext()
         req(url.exists(site))
-        if(grepl("http", site)) site = gsub(".*/", "", site)
+        if(grepl("http", site)) site = gsub("https://|http://", "", site)
+        print(site)
         if(url.exists(paste0("https://", site))){
             out_text = glue("<font color=\"#0BB147\"><b>{site} is secure  (https available)</b></font>")
         } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")}
@@ -134,10 +148,6 @@ shinyServer(function(input, output, session) {
         } else{out_text = glue("<font color=\"#DE4A2B\"><b>{site} had no modification date in html header</b></font>")}
     })
     
-    
-    
-    
-    
     observeEvent(input$block_two, {
         req(url.exists(webtext()))
         if(as.character(input$block_two) == "1"){
@@ -151,30 +161,30 @@ shinyServer(function(input, output, session) {
         req(webtext() != "")
         if(input$question1 == "Clinician"){
             score_list = c(as.numeric(input$aims) ,
-                      as.numeric(as.character(input$achieve)) ,
-                      as.numeric(input$relevance) ,
-                      as.numeric(input$references), 
-                      as.numeric(input$when ) ,
-                      as.numeric(input$biased), 
-                      as.numeric(input$sources), 
-                      as.numeric(input$uncertainty)
-                      )
+                           as.numeric(as.character(input$achieve)) ,
+                           as.numeric(input$relevance) ,
+                           as.numeric(input$references), 
+                           as.numeric(input$when ) ,
+                           as.numeric(input$biased), 
+                           as.numeric(input$sources), 
+                           as.numeric(input$uncertainty)
+            )
             score_list = score_list[! is.na(score_list)]
             
             subjective_score = sum(score_list)# TODO divide by max
         } else {    
             score_list = c(as.numeric(input$who) ,
-                                   as.numeric(input$current) ,
-                                   as.numeric(input$research))
-        score_list = score_list[! is.na(score_list)]
-        
-        subjective_score = sum(score_list)
+                           as.numeric(input$current) ,
+                           as.numeric(input$research))
+            score_list = score_list[! is.na(score_list)]
+            
+            subjective_score = sum(score_list)
         }
-        automatic_score = subjective_score
+        automatic_score = subjective_score/16
         
         tagList(tags$p("Suggested score: "),
                 automatic_score,
-                sliderInput("slider", "Your subjective score", 0, 10, 0))
+                sliderInput("slider", "Your subjective score", 0, 1, automatic_score ))
     })
-
+    
 })

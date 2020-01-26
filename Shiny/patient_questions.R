@@ -1,6 +1,6 @@
 div(class = 'container',
-   # div(class = 'col-sm-2'),
-    div(#class = 'col-sm-8',
+    div(class = 'col-sm-2'),
+    div(class = 'col-sm-8',
         radioButtons("who", "1. Do you know who wrote this?",
                      c("Yes" = "2",
                        "Somewhat" = "1",

@@ -58,7 +58,6 @@ div(class = 'container',
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"), 
-        actionButton("block_two", "Next"),
         br()
     )
 )
