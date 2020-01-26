@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
     })
     
     observeEvent(input$block_one, {
-        save_data(runif(5, 2.0, 7.5))
+        #save_data(runif(5, 2.0, 7.5))
         output$block_one <- renderUI({ source("questions1.R", local = TRUE)$value })
     })
     
@@ -64,8 +64,6 @@ shinyServer(function(input, output, session) {
         req(input$website != "")
         input$website
     })
-    
-    
     
     output$exist = renderText({
         req(input$website != "")
@@ -78,6 +76,7 @@ shinyServer(function(input, output, session) {
     output$secure = renderText({
         site = webtext()
         req(url.exists(site))
+        if(grepl("http", site)) site = gsub(".*/", "", site)
         if(url.exists(paste0("https://", site))){
             out_text = glue("<font color=\"#0BB147\"><b>{site} is secure  (https available)</b></font>")
         } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")}
@@ -113,7 +112,6 @@ shinyServer(function(input, output, session) {
             "' that is not ideal, we like uk, gov, org etc.", "</b></font>")}
         
     })
-    
     
     output$update = renderText({
         
@@ -155,12 +153,16 @@ shinyServer(function(input, output, session) {
         req(webtext() != "")
         print(input$question1)
         if(input$question1 == "Clinician"){
-            subjective_score = as.numeric(input$aims) + 
-                as.numeric(input$achieve) + 
-                as.numeric(input$relevance) + 
-                as.numeric(input$references) + 
-                as.numeric(input$when ) + 
-                as.numeric(input$biased) # TODO divide by max
+            
+            score_list = c(as.numeric(input$aims) ,
+                      as.numeric(input$achieve) ,
+                      as.numeric(input$relevance) ,
+                      as.numeric(input$references), 
+                      as.numeric(input$when ) ,
+                      as.numeric(input$biased) )
+            score_list = score_list[! is.na(score_list)]
+            
+            subjective_score = sum(score_list)# TODO divide by max
         } else { subjective_score = 0}
         automatic_score = subjective_score
         
