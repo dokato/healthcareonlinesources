@@ -1,3 +1,26 @@
+
+function compareUrlForPop(key, url){
+    var rex = new RegExp(key, 'g');
+    var a = rex.exec(url);
+    console.log('>>' + key + ' ' + url)
+    if (a == null) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+function regCheckUrls(url, webData) {
+    for (const key in webData.webData) {
+        comp = compareUrlForPop(key, url);
+        if (comp === 1 ) {
+            return key;
+        }
+    }
+    return url;
+};
+
+
 document.addEventListener('DOMContentLoaded', function () {
     var test = document.getElementById("reminder").innerHTML;
 
@@ -9,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
             //alert(JSON.stringify(address));
             chrome.storage.local.get(['webData'], function(webData){
                 document.getElementById("firstRow").innerHTML = address;
-                var score = webData.webData[address];
+                var newaddress = regCheckUrls(address, webData);
+                var score = webData.webData[newaddress];
                 if (score === undefined) {
                     document.getElementById("secondRow").innerHTML = undefined;
                 } else {
