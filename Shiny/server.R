@@ -150,7 +150,7 @@ shinyServer(function(input, output, session) {
     
     observeEvent(input$block_two, {
         req(url.exists(webtext()))
-        if(as.character(input$block_two) == "1"){
+        if(as.character(input$question1) == "Yes"){
             file = "clinician_questions.R"
         } else{file = "patient_questions.R"}
         output$block_two <- renderUI({ source(file, local = TRUE)$value })
@@ -159,7 +159,8 @@ shinyServer(function(input, output, session) {
     
     output$score <- renderUI({
         req(webtext() != "")
-        if(input$question1 == "Clinician"){
+        print(input$question1)
+        if(input$question1 == "Yes"){
             score_list = c(as.numeric(input$aims) ,
                            as.numeric(as.character(input$achieve)) ,
                            as.numeric(input$relevance) ,
@@ -184,7 +185,7 @@ shinyServer(function(input, output, session) {
         
         tagList(tags$p("Suggested score: "),
                 automatic_score,
-                sliderInput("slider", "Your subjective score", 0, 1, automatic_score ))
+                sliderInput("slider", "Please give a rating from 0 to 1 (0 being trash and 1 being trustworthy)", 0, 1, automatic_score ))
     })
     
 })

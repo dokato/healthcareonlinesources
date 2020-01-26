@@ -25,7 +25,10 @@ shinyUI(
             uiOutput("block_two"),
             div(align = "center",
               htmlOutput("score"), 
+              conditionalPanel(
+                condition = "input.block_two == 1 | input.block_two == 2",
               actionButton("load_up", "Submit")
+              )
             ),
             
             br(),br(),br(),br()
