@@ -60,7 +60,6 @@ shinyServer(function(input, output, session) {
     })
     
     webtext <- eventReactive(input$block_two, {
-        print(input$website)
         req(input$website != "")
         input$website
     })
@@ -119,7 +118,6 @@ shinyServer(function(input, output, session) {
         req(url.exists(site))
         header = HEAD(site)
         cache = cache_info(header)
-        print(as.character(cache$modified) )
         if(length(as.character(cache$modified)) > 0){
             dat = unlist(strsplit(as.character(cache$modified), split=" "))
             dat = strptime(dat[1], format = "%Y-%m-%d")
@@ -151,19 +149,27 @@ shinyServer(function(input, output, session) {
     
     output$score <- renderUI({
         req(webtext() != "")
-        print(input$question1)
         if(input$question1 == "Clinician"){
-            
             score_list = c(as.numeric(input$aims) ,
-                      as.numeric(input$achieve) ,
+                      as.numeric(as.character(input$achieve)) ,
                       as.numeric(input$relevance) ,
                       as.numeric(input$references), 
                       as.numeric(input$when ) ,
-                      as.numeric(input$biased) )
+                      as.numeric(input$biased), 
+                      as.numeric(input$sources), 
+                      as.numeric(input$uncertainty)
+                      )
             score_list = score_list[! is.na(score_list)]
             
             subjective_score = sum(score_list)# TODO divide by max
-        } else { subjective_score = 0}
+        } else {    
+            score_list = c(as.numeric(input$who) ,
+                                   as.numeric(input$current) ,
+                                   as.numeric(input$research))
+        score_list = score_list[! is.na(score_list)]
+        
+        subjective_score = sum(score_list)
+        }
         automatic_score = subjective_score
         
         tagList(tags$p("Suggested score: "),
