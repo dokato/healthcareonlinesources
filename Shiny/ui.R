@@ -6,7 +6,7 @@ library(httr)
 
 options(shiny.sanitize.errors = FALSE)
 
-credits <- "Created by Nii Campbell, Tom Chambers, Alisha Davies, Katriona Goldmann, Mark James, Dominik Krzemiński @ NHSHackDay Cardiff 2020"
+credits <- "Created by Nia Campbell, Tom Chambers, Alisha Davies, Katriona Goldmann, Mark James, Dominik Krzemiński @ NHSHackDay Cardiff 2020"
 
 shinyUI(
   tagList(
