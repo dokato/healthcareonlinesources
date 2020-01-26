@@ -4,6 +4,7 @@ library(RCurl)
 library(ggpubr)
 library(glue)
 library(mongolite)
+library(shinyalert)
 
 options(shiny.sanitize.errors = FALSE)
 
@@ -69,6 +70,11 @@ shinyServer(function(input, output, session) {
         ))
 
         
+    })
+    
+    observeEvent(input$preview, {
+        # Show a modal when the button is pressed
+        shinyalert("Oops!", "Something went wrong.", type = "error")
     })
     
     webtext <- eventReactive(input$block_two, {

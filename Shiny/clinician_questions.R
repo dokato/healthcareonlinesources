@@ -14,6 +14,8 @@ div(class = 'container',
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
+        useShinyalert(),  # Set up shinyalert
+        actionButton("preview", "Preview"),
         
         # radioButtons("relevance", "3. Is it relevant?",
         #              c("Yes" = "2",
