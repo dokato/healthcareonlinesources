@@ -24,11 +24,12 @@ db_clean <- db_clean %>% select(-V3) %>%
 
 
 # summarise if same website/V1 name
-db_out <- db_clean %>% mutate(V1=gsub("(^https://)|(/$)","",V1)) %>%
-  group_by(V1) %>% summarise(V2=mean(V2)) %>%
+db_out <- db_clean %>% mutate(V1=gsub("(^http://)|(^https://)|(/$)","",V1),
+                              V1=ifelse(!grepl("^www\\.",V1),paste0("www.",V1),V1)) %>%
+  group_by(V1) %>% summarise(V2=median(V2),n=n(),sd=sd(V2)) %>%
   mutate(V2=V2*10,V2=ceiling(V2))
 
 #Output
 library(jsonlite)
-toJSON(db_out, pretty=TRUE)
+toJSON(db_out %>% select(V1,V2), pretty=TRUE)
 
