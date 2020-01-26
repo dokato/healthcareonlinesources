@@ -27,7 +27,9 @@ db_clean <- db_clean %>% select(-V3) %>%
 db_sum <- db_clean %>% mutate(V1=gsub("(^http://)|(^https://)|(/$)","",V1),
                               V1=ifelse(!grepl("^www\\.",V1),paste0("www.",V1),V1)) %>%
   group_by(V1) %>% summarise(V2median=median(V2),n=n(),V2sd=sd(V2)) %>%
-  mutate(V2=V2median*10,V2median=ceiling(V2median)) %>% select(-V2median)
+  mutate(V2=V2median*10,V2median=ceiling(V2median)) %>% select(-V2median) %>%
+  mutate(nsep=str_count(V1,"/")) %>%
+  arrange(desc(nsep))
 
 #Output
 # alter to prep files in desired format
