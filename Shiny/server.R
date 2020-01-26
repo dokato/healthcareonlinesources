@@ -67,7 +67,7 @@ shinyServer(function(input, output, session) {
             easyClose = TRUE,
             footer = NULL
         ))
-        print("sent")
+
         
     })
     
@@ -80,6 +80,7 @@ shinyServer(function(input, output, session) {
     output$exist = renderText({
         req(input$website != "")
         site = webtext()
+        if(grepl("http", site)) site = gsub("https://|http://", "", site)
         if(url.exists(site)){
             out_text = glue("<font color=\"#0BB147\"><b>{site} website exists, hooray!</b></font>")
         } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a valid website!</b></font>")}
@@ -89,12 +90,9 @@ shinyServer(function(input, output, session) {
         site = webtext()
         req(url.exists(site))
         if(grepl("http", site)) site = gsub("https://|http://", "", site)
-        print(site)
         if(url.exists(paste0("https://", site))){
             out_text = glue("<font color=\"#0BB147\"><b>{site} is secure  (https available)</b></font>")
         } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")}
-        
-        
     })
     
     output$tld = renderText({
@@ -163,7 +161,7 @@ shinyServer(function(input, output, session) {
         if(input$question1 == "Yes"){
             score_list = c(as.numeric(input$aims) ,
                            as.numeric(as.character(input$achieve)) ,
-                           as.numeric(input$relevance) ,
+                           #as.numeric(input$relevance) ,
                            as.numeric(input$references), 
                            as.numeric(input$when ) ,
                            as.numeric(input$biased), 
@@ -171,20 +169,20 @@ shinyServer(function(input, output, session) {
                            as.numeric(input$uncertainty)
             )
             score_list = score_list[! is.na(score_list)]
-            
-            subjective_score = sum(score_list)# TODO divide by max
+            print(score_list)
+            subjective_score = mean(score_list, na.rm=T)#/length(score_list)# TODO divide by max
         } else {    
             score_list = c(as.numeric(input$who) ,
                            as.numeric(input$current) ,
                            as.numeric(input$research))
             score_list = score_list[! is.na(score_list)]
             
-            subjective_score = sum(score_list)
+            subjective_score = mean(score_list)#/length(score_list)
         }
-        automatic_score = subjective_score/16
+        automatic_score = subjective_score/2
         
         tagList(tags$p("Suggested score: "),
-                automatic_score,
+                format(automatic_score, digits=2),
                 sliderInput("slider", "Please give a rating from 0 to 1 (0 being trash and 1 being trustworthy)", 0, 1, automatic_score ))
     })
     

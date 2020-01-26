@@ -6,7 +6,7 @@ library(httr)
 
 options(shiny.sanitize.errors = FALSE)
 
-credits <- "Created by ... @ NHSHackDay Cardiff 2020"
+credits <- "Created by Tom Chambers, Alisha Davies, Katriona Goldmann, Mark James, Dominik Krzemiński @ NHSHackDay Cardiff 2020"
 
 shinyUI(
   tagList(
@@ -18,15 +18,15 @@ shinyUI(
               tagList(
                 htmlOutput("exist"), br(),
                 htmlOutput("secure"), br(),
-                htmlOutput("tld"), br(),
-                htmlOutput("update"), br()
+                htmlOutput("tld"), br()#,
+                #htmlOutput("update"), br()
               )
             ),
             uiOutput("block_two"),
             div(align = "center",
               htmlOutput("score"), 
               conditionalPanel(
-                condition = "input.block_two == 1 | input.block_two == 2",
+                condition = "input.block_two",
               actionButton("load_up", "Submit")
               )
             ),
