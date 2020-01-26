@@ -1,10 +1,9 @@
 {
-  "name": "HelthNet Trust",
-  "version": "0.0.1",
-  "description": "This extension assesses trustfulness of medical sources.",
+  "name": "WHAT",
+  "version": "0.0.2",
+  "description": "Websites for Health Assesment Tool. This extension assesses trustfulness of medical sources.",
   "icons": {
-    "32": "images/icon32.png",
-    "128": "images/icon128.png"
+    "64": "images/icon-def.png"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
