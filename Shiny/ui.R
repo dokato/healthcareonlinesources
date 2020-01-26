@@ -16,7 +16,7 @@ shinyUI(
             div(class = 'col-sm-2'),
             div(align = "center", class = 'col-sm-8',
               tagList(
-                htmlOutput("exist"), br(),
+                withSpinner((htmlOutput("exist"))) , br(),
                 htmlOutput("secure"), br(),
                 htmlOutput("tld"), br()#,
                 #htmlOutput("update"), br()

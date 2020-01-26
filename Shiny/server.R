@@ -133,7 +133,6 @@ shinyServer(function(input, output, session) {
         if(length(as.character(cache$modified)) > 0){
             dat = unlist(strsplit(as.character(cache$modified), split=" "))
             dat = strptime(dat[1], format = "%Y-%m-%d")
-            print(dat)
             difft = abs(difftime(dat, Sys.Date(), units="weeks"))
             
             if(difft < 365.25){
@@ -157,7 +156,6 @@ shinyServer(function(input, output, session) {
     
     output$score <- renderUI({
         req(webtext() != "")
-        print(input$question1)
         if(input$question1 == "Yes"){
             score_list = c(as.numeric(input$aims) ,
                            as.numeric(as.character(input$achieve)) ,
@@ -180,6 +178,8 @@ shinyServer(function(input, output, session) {
             subjective_score = mean(score_list)#/length(score_list)
         }
         automatic_score = subjective_score/2
+        
+        if(is.na(automatic_score)) automatic_score = 0
         
         tagList(tags$p("Suggested score: "),
                 format(automatic_score, digits=2),
