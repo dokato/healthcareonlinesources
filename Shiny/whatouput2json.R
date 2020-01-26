@@ -1,5 +1,3 @@
-
-options(mongo_password="GrlDDvJenbnh4EwK")
 require(mongolite)
 require(tidyverse)
 
