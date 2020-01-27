@@ -37,11 +37,12 @@ db_sum <- db_clean %>% mutate(V1=gsub("(^http://)|(^https://)|(/$)","",V1),
 db_out <- db_sum %>% select(V1,V2)
 
 # Creating info JSON
-fileConn <- file("info.json")
-writeLines("{\n", fileConn)
+json_content <- paste0("{\n")
 for (i in 1:length(db_out$V1)){
   cat(paste0("\"", db_out$V1[[i]], "\" : ", db_out$V2[[i]]), ",\n")
-  writeLines(paste0("\"", db_out$V1[[i]], "\" : ", db_out$V2[[i]], ",\n"))
+  json_content <- paste0(json_content, paste0("\"", db_out$V1[[i]], "\" : ", db_out$V2[[i]], ",\n"))
 }
-writeLines("}\n", fileConn)
+json_content <- paste0(json_content, "}\n")
+fileConn <- file("info.json")
+writeLines(json_content, fileConn)
 close(fileConn)

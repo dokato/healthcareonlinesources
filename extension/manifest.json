@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "description": "Websites for Health Assesment Tool. This extension assesses trustfulness of medical sources.",
   "icons": {
-    "64": "images/icon-def.png"
+    "64": "images/icon-def.png",
+    "128": "images/icon-logo.png"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
@@ -20,7 +21,7 @@
     "scripts": ["background.js"]
   },
   "permissions": [
-    "activeTab", "tabs", "http://*/*", "storage"
+    "activeTab", "tabs", "storage", "notifications"
   ],
   "web_accessible_resources": [
     "data/info.json"

@@ -16,12 +16,21 @@ function compareUrl(url, request){
     }
 }
 
+function notify() {
+    chrome.notifications.create({
+        type:     'basic',
+        iconUrl:  'images/icon-bad.png',
+        title:    'WHAT reminder',
+        message:  'Be EXTREMELY careful when looking for a medical advice on this website',
+        priority: 0});
+}
+
 function changeIcon(score){
     if (score > 6) {
         changeIconGood();
     } else if (score === 1 || score === 0) {
         changeIconBad();
-        alert("Be EXTREMELY careful when looking for a medical advice on this website");
+        notify();
     } else {
         changeIconBad();
     }
