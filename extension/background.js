@@ -3,7 +3,7 @@ function changeIconBad(){
 }
 
 function changeIconGood(){
-    chrome.browserAction.setIcon({path: "images/icon32.png"});
+    chrome.browserAction.setIcon({path: "images/icon-good.png"});
 }
 
 function compareUrl(url, request){
