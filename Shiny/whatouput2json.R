@@ -1,7 +1,8 @@
-require(mongolite)
-require(tidyverse)
+library(mongolite)
+library(tidyverse)
+library(jsonlite)
 
-loadData <- function() {
+load_data <- function() {
   # Connect to the database
   db <- mongo(collection = "health_responses",
               url = paste0("mongodb+srv://abc:",
@@ -13,7 +14,7 @@ loadData <- function() {
 }
 
 # load uncleaned data
-db_unclean<-loadData()
+db_unclean<-load_data()
 
 # remove early attempts for the moment (these were wrong from earlier version)
 db_clean <- db_unclean[4:nrow(db_unclean),]
@@ -33,15 +34,14 @@ db_sum <- db_clean %>% mutate(V1=gsub("(^http://)|(^https://)|(/$)","",V1),
 
 #Output
 # alter to prep files in desired format
-db_out<-db_sum %>% select(V1,V2)
-n <- db_out$V1
-db_out <- as.data.frame(t(db_out[,-1]))
-colnames(db_out) <- n
-str(db_out) # Check the column types
-rownames(db_out) <- NULL
+db_out <- db_sum %>% select(V1,V2)
 
-# save to json
-library(jsonlite)
-toJSON(db_out,pretty=TRUE)
-
-
+# Creating info JSON
+fileConn <- file("info.json")
+writeLines("{\n", fileConn)
+for (i in 1:length(db_out$V1)){
+  cat(paste0("\"", db_out$V1[[i]], "\" : ", db_out$V2[[i]]), ",\n")
+  writeLines(paste0("\"", db_out$V1[[i]], "\" : ", db_out$V2[[i]], ",\n"))
+}
+writeLines("}\n", fileConn)
+close(fileConn)
