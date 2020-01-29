@@ -2,13 +2,13 @@ library(mongolite)
 library(tidyverse)
 library(jsonlite)
 
+collection_name <- "health_responses"
+
 load_data <- function() {
-  # Connect to the database
-  db <- mongo(collection = "health_responses",
+  db <- mongo(collection = collection_name,
               url = paste0("mongodb+srv://abc:",
                            options()$mongo_password,
                            "@cluster0-hzl4d.mongodb.net/test?retryWrites=true&w=majority"))
-  # Read all the entries
   data <- db$find()
   data
 }
