@@ -19,7 +19,12 @@ p {
 }
 
 h2 {
-  font-size: 2.5em;
+  font-size: 2.2em;
+}
+
+p span {
+  font-size: 1.5em;
+  color: #0047c1;
 }
 
 .post-container img {
@@ -33,7 +38,6 @@ h2 {
     border-radius: 5px;
     box-shadow: 5px 10px 18px #888888;
     text-align: right;
-    height: 240px;
 }
 
 
@@ -48,5 +52,4 @@ h2 {
     border-radius: 5px;
     box-shadow: 5px 10px 18px #888888;
     text-align: left;
-    height: 300px;
 }

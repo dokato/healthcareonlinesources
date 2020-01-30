@@ -53,7 +53,11 @@ shinyUI(tagList(
    tabPanel("Plugin",
      fluidPage(
        div(align = "center",
-           p("Plugin will be available on Chrome Web Store soon!"), br(), tags$img(src="plugin.png")
+           p("Download from Chrome Web Store!"),
+           tags$b(tags$a(href="https://chrome.google.com/webstore/detail/what/maoedkipekbhpphphjmnmoccdgkkahfn",
+                  "+ Add WHAT to your browser NOW +",
+                  target="_blank")),
+           br(), br(), tags$img(src="plugin.png")
        )
      )
    ),
