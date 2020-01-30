@@ -1,0 +1,55 @@
+h1 {
+   text-align: center;
+   border-radius: 10px;
+   background: #515151;
+   color: white;
+   padding: 5px;
+   margin: 10px;
+   width: 100%;
+   font-size: 4em;
+}
+
+p {
+  font-size: 1.2em;
+}
+
+#landing {
+  text-align: center;
+  width: 50%;
+}
+
+h2 {
+  font-size: 2.2em;
+}
+
+p span {
+  font-size: 1.5em;
+  color: #0047c1;
+}
+
+.post-container img {
+  float: left;
+  width: 200px;
+}
+
+.post-container{
+    margin: 10px;
+    padding: 13px;
+    border-radius: 5px;
+    box-shadow: 5px 10px 18px #888888;
+    text-align: right;
+}
+
+
+.post-container-middle img {
+  float: right;
+  width: 250px;
+}
+
+.post-container-middle{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 5px 10px 18px #888888;
+    text-align: left;
+}

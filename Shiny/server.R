@@ -4,9 +4,12 @@ library(RCurl)
 library(ggpubr)
 library(glue)
 library(mongolite)
-library(shinyalert)
 
 options(shiny.sanitize.errors = FALSE)
+############
+# HERE SET ALL THE OPTIONS NEEDED FOR DEPLOY: mongo_password, what_password
+
+############
 
 collection_name <- "health_responses"
 
@@ -20,27 +23,26 @@ save_data <- function(data) {
     db$insert(data)
 }
 
-head_style <- "
-   text-align: center;
-   border-radius: 10px;
-   background: black;
-   color: burlywood;
-   padding: 10px;
-   margin: 4px;
-   width: 100%;
-   font-size: 4em;
-   "
-head_small_style <- "
-   text-align: center;
-   border-radius: 10px;
-   background: #515151;
-   color: white;
-   padding: 4px;
-   margin: 2px;
-   width: 100%;
-   font-size: 1em;
-   "
+submitted_modal <- function(){
+  modalDialog(
+    title = "Submitted!",
+    "Thank you",
+    easyClose = TRUE,
+    footer = NULL
+  )
+}
 
+verify_modal <- function(){
+  modalDialog(
+    title = "You need to verify!",
+    p("You need to verify to be able to submit as a healthcare professional."),
+    p("If you think, you are eligible, please drop us an email:"),
+    p(tags$b("WHAThealthonline@gmail.com")),
+    p("asking for access."),
+    easyClose = TRUE,
+    footer = NULL
+  )
+}
 
 shinyServer(function(input, output, session) {
     
@@ -48,37 +50,32 @@ shinyServer(function(input, output, session) {
         div(class = 'container', id = "home",
             div(class = 'col-sm-2'),
             div(class = 'col-sm-8',
-                h1("W  H  A  T ?", style = head_style),
-                p("Websites for Health Assesment Tool", style = head_small_style),
-                br(),
-                actionButton("block_one", "Start")
-            ))
+                h1("Websites for Health Assesment Tool",
+                   img(src="logo.png", height="32"))
+            ), br(), br())
     })
     
     observeEvent(input$block_one, {
-        output$block_one <- renderUI({ source("questions1.R", local = TRUE)$value })
+        output$block_one <- renderUI({
+          source("questions1.R", local = TRUE)$value
+        })
     })
 
-    
     observeEvent(input$load_up, {
-        save_data(c(input$website, input$slider, input$question1))
-        showModal(modalDialog(
-            title = "Submitted!",
-            "Thanks",
-            easyClose = TRUE,
-            footer = NULL
-        ))
-
-        
-    })
-    
-    observeEvent(input$preview, {
-        # Show a modal when the button is pressed
-        shinyalert("Oops!", "Something went wrong.", type = "error")
+      if (input$professional == "Yes") {
+        if (input$password != options()$what_password) {
+          showModal(verify_modal())
+        } else {
+          save_data(c(input$website, input$slider, input$professional))
+          showModal(submitted_modal())
+        }
+      } else {
+        save_data(c(input$website, input$slider, input$professional))
+        showModal(submitted_modal())
+      }
     })
     
     webtext <- eventReactive(input$block_two, {
-        #raw_score(raw_score() + 1)
         req(input$website != "")
         input$website
     })
@@ -89,16 +86,21 @@ shinyServer(function(input, output, session) {
         if(grepl("http", site)) site = gsub("https://|http://", "", site)
         if(url.exists(site)){
             out_text = glue("<font color=\"#0BB147\"><b>{site} website exists, hooray!</b></font>")
-        } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a valid website!</b></font>")}
+        } else {
+          out_text = glue("<font color=\"#DE4A2B\"><b>{site} seem to be not a valid website!</b></font>")
+        }
     })
     
     output$secure = renderText({
         site = webtext()
         req(url.exists(site))
-        if(grepl("http", site)) site = gsub("https://|http://", "", site)
+        if(grepl("http", site))
+          site = gsub("https://|http://", "", site)
         if(url.exists(paste0("https://", site))){
             out_text = glue("<font color=\"#0BB147\"><b>{site} is secure  (https available)</b></font>")
-        } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")}
+        } else {
+          out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")
+        }
     })
     
     output$tld = renderText({
@@ -130,42 +132,20 @@ shinyServer(function(input, output, session) {
         
     })
     
-    output$update = renderText({
-        
-        site = webtext()
-        req(url.exists(site))
-        header = HEAD(site)
-        cache = cache_info(header)
-        if(length(as.character(cache$modified)) > 0){
-            dat = unlist(strsplit(as.character(cache$modified), split=" "))
-            dat = strptime(dat[1], format = "%Y-%m-%d")
-            difft = abs(difftime(dat, Sys.Date(), units="weeks"))
-            
-            if(difft < 365.25){
-                out_text = glue("<font color=\"#0BB147\"><b>{site} has been updated in the last 12 months (last modified:  {d})</b></font>")
-            } else if(difft < 365.25*5){
-                out_text = glue("<font color=\"#EFBD0D\"><b>{site} has been updated in the last 5 years (last modified: {d})</b></font>")
-                
-            } else{ out_text = glue("<font color=\"#DE4A2B\"><b>{site} was last modified over 5 years ago</b></font>")}
-            
-        } else{out_text = glue("<font color=\"#DE4A2B\"><b>{site} had no modification date in html header</b></font>")}
-    })
-    
     observeEvent(input$block_two, {
-        req(url.exists(webtext()))
-        if(as.character(input$question1) == "Yes"){
-            file = "clinician_questions.R"
-        } else{file = "patient_questions.R"}
-        output$block_two <- renderUI({ source(file, local = TRUE)$value })
+      req(url.exists(webtext()))
+      file <- ifelse(as.character(input$professional) == "Yes",
+                     "clinician_questions.R",
+                     "patient_questions.R")
+      output$block_two <- renderUI({ source(file, local = TRUE)$value })
     })
     
     
     output$score <- renderUI({
         req(webtext() != "")
-        if(input$question1 == "Yes"){
+        if(input$professional == "Yes"){
             score_list = c(as.numeric(input$aims) ,
                            as.numeric(as.character(input$achieve)) ,
-                           #as.numeric(input$relevance) ,
                            as.numeric(input$references), 
                            as.numeric(input$when ) ,
                            as.numeric(input$biased), 
@@ -174,22 +154,25 @@ shinyServer(function(input, output, session) {
             )
             score_list = score_list[! is.na(score_list)]
             print(score_list)
-            subjective_score = mean(score_list, na.rm=T)#/length(score_list)# TODO divide by max
+            subjective_score = mean(score_list, na.rm=T)
         } else {    
             score_list = c(as.numeric(input$who) ,
                            as.numeric(input$current) ,
                            as.numeric(input$research))
             score_list = score_list[! is.na(score_list)]
             
-            subjective_score = mean(score_list)#/length(score_list)
+            subjective_score = mean(score_list)
         }
         automatic_score = subjective_score/2
         
         if(is.na(automatic_score)) automatic_score = 0
         
         tagList(tags$p("Suggested score: "),
-                format(automatic_score, digits=2),
-                sliderInput("slider", "Please give a rating from 0 to 1 (0 being trash and 1 being trustworthy)", 0, 1, automatic_score ))
+                tags$h4(format(automatic_score, digits=2)),
+                tags$p("But you can use your own judgement!"),
+                sliderInput("slider",
+                            "Please give a rating from 0 to 1 (0 being unreliable and 1 being trustworthy)",
+                            0, 1, automatic_score, width = "50%" ))
     })
     
 })

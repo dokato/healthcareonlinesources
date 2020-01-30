@@ -7,59 +7,45 @@ div(class = 'container',
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        
         radioButtons("achieve", "2. Is the information provided  clear and aligned to that focus?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        useShinyalert(),  # Set up shinyalert
-        actionButton("preview", "Preview"),
-        
-        # radioButtons("relevance", "3. Is it relevant?",
-        #              c("Yes" = "2",
-        #                "Somewhat" = "1",
-        #                "No" = "0",
-        #                "Not Applicable/Don't Know" = "NA"), inline=TRUE,
-        #              selected = "NA"),
-        
         radioButtons("references", "3. Is it clear what sources of information were used to compile the website (other than the author or producer)?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        
         radioButtons("when", "4. Is it clear when the sources of information used on the website were produced?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        
         radioButtons("biased", "5. Is it balanced and unbiased?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        
-        
         radioButtons("sources", "6. Does it provide details of additional sources of support and information?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
-        
-        
         radioButtons("uncertainty", "7. Does it refer to areas of uncertainty?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
                        "No" = "0",
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
-                     selected = "NA"), 
+                     selected = "NA"),
+        textInput("password",
+          "Medical experts must provide a password to submit."
+        ),
         br()
     )
 )
