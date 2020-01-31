@@ -1,7 +1,8 @@
 {
-  "name": "WHAT",
+  "name": "WHAT - Websites for Health Assessment Tool",
+  "short_name": "WHAT",
   "version": "0.0.2",
-  "description": "Websites for Health Assesment Tool. This extension assesses trustfulness of medical sources.",
+  "description": "Websites for Health Assessment Tool. This extension assesses trustfulness of medical sources based on users and medical experts votes.",
   "icons": {
     "64": "images/icon-def.png",
     "128": "images/icon-logo.png"

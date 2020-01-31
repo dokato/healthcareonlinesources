@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
         div(class = 'container', id = "home",
             div(class = 'col-sm-2'),
             div(class = 'col-sm-8',
-                h1("Websites for Health Assesment Tool",
+                h1("Websites for Health Assessment Tool",
                    img(src="logo.png", height="32"))
             ), br(), br())
     })
