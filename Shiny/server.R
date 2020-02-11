@@ -11,7 +11,7 @@ options(shiny.sanitize.errors = FALSE)
 
 ############
 
-collection_name <- "health_responses"
+collection_name <- "test" #health_responses
 
 save_data <- function(data) {
     db <- mongo(collection = collection_name,
@@ -66,7 +66,10 @@ shinyServer(function(input, output, session) {
         if (input$password != options()$what_password) {
           showModal(verify_modal())
         } else {
-          save_data(c(input$website, input$slider, input$professional))
+          save_data(c(input$website, input$slider, input$professional,
+                     input$aims, input$achieve, input$references, input$when, input$biased, input$sources, input$uncertainty))
+          # print(c(input$website, input$slider, input$professional,
+          #         input$aims, input$achieve, input$references, input$when, input$biased, input$sources, input$uncertainty ))
           showModal(submitted_modal())
         }
       } else {
@@ -176,3 +179,4 @@ shinyServer(function(input, output, session) {
     })
     
 })
+
