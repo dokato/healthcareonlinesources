@@ -36,6 +36,23 @@ function changeIcon(score){
     }
 }
 
+function compareWithDataJSON(request) {
+    // request must have url parameter
+    browser.storage.local.get(['webData'], function(webData){
+        var comp = 0;
+        for (const key in webData.webData) {
+            comp = compareUrl(key, request);
+            if (comp === 1 ) { // if data found in database changed icon to appropiate
+                changeIcon(webData.webData[key])
+                break;
+            }
+        };
+        if (comp === 0){ // if hasn't been found change to red
+            changeIcon(-1);
+        }
+    })
+}
+
 const url = browser.runtime.getURL('data/info.json');
 
 (function readJSON(){
@@ -55,21 +72,12 @@ const url = browser.runtime.getURL('data/info.json');
     });
 })();
 
+browser.tabs.onActivated.addListener(function(activeInfo){
+    var tab = browser.tabs.get(activeInfo.tabId, function(tab) {
+        compareWithDataJSON(tab);
+    })
+});
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    browser.storage.local.get(['webData'], function(webData){
-        var comp = 0;
-        for (const key in webData.webData) {
-            comp = compareUrl(key, request);
-            if (comp === 1 ) {
-                changeIcon(webData.webData[key])
-                break;
-            }
-        };
-        console.log(comp);
-        if (comp === 0){
-            changeIcon(-1);
-        }
-    })
-
-})
+    compareWithDataJSON(request);
+});
