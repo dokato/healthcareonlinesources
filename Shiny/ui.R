@@ -24,7 +24,7 @@ shinyUI(tagList(
             tagList(
               fluidPage(
                 div(align = "center",
-                    p("Thank you for being awesome and helping us scoring medical websites!"),
+                    p("Thank you for helping us to score websites for medical advice!"),
                     actionButton("block_one", "START SCORING")
                 ),
                 uiOutput("block_one"),
@@ -55,7 +55,7 @@ shinyUI(tagList(
        div(align = "center",
            p("Download from Chrome Web Store!"),
            tags$b(tags$a(href="https://chrome.google.com/webstore/detail/what/maoedkipekbhpphphjmnmoccdgkkahfn",
-                  "+ Add WHAT to your browser NOW +",
+                  "+ Add WHAT to your browser now +",
                   target="_blank")),
            br(), br(), tags$img(src="plugin.png")
        )
