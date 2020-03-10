@@ -2,7 +2,7 @@ library(mongolite)
 library(tidyverse)
 library(jsonlite)
 
-collection_name <- "health_responses"
+collection_name <- "health_responses"  # "test" #health_responses
 
 load_data <- function() {
   db <- mongo(collection = collection_name,
@@ -15,9 +15,25 @@ load_data <- function() {
 
 # load uncleaned data
 db_unclean<-load_data()
+db_clean <- db_unclean
 
-# remove early attempts for the moment (these were wrong from earlier version)
-db_clean <- db_unclean[4:nrow(db_unclean),]
+# TEMP #remove early attempts for the moment (these were wrong from earlier version)
+db_clean <- db_clean[4:nrow(db_clean),] 
+
+# DEPENDS ON COLS PROVIDED
+newcolnames<-c("website", # website being searched
+               "score", # score they provide
+               "prof", # are they a professional
+               "aims", # 1. Does the website have a clear focus?
+               "achieve", # 2. Is the information provided clear and aligned to that focus? 
+               "reference", # 3. Is it clear what sources of information were used to compile the website (other than the author or producer)?
+               "when", # 4. Is it clear when the sources of information used on the website were produced?
+               "unbiased", # 5. Is it balanced and unbiased?
+               "sources", # 6. Does it provide details of additional sources of support and information?
+               "uncertainty", # 7. Does it refer to areas of uncertainty? 
+               "Date", #date of input
+               "Time") # time of input 
+colnames(db_clean) <- newcolnames
 
 # Drop Healthcare column for the moment and make V2 nuemric
 db_clean <- db_clean %>% select(-V3) %>%
@@ -32,7 +48,7 @@ db_sum <- db_clean %>% mutate(V1=gsub("(^http://)|(^https://)|(/$)","",V1),
   mutate(nsep=str_count(V1,"/")) %>%
   arrange(desc(nsep))
 
-#Output
+#Output for json
 # alter to prep files in desired format
 db_out <- db_sum %>% select(V1,V2)
 
