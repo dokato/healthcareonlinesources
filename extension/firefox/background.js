@@ -53,22 +53,11 @@ function compareWithDataJSON(request) {
     })
 }
 
-const url = browser.runtime.getURL('data/info.json');
+const data_url = browser.runtime.getURL('data/info.json');
 
 (function readJSON(){
-    browser.runtime.getPackageDirectoryEntry(function(root) {
-        root.getFile("data/info.json", {}, function(fileEntry) {
-            fileEntry.file(function(file) {
-                var reader = new FileReader();
-                var flag = 0;
-                reader.onloadend = function(e) {
-                    var webData = JSON.parse(this.result);
-                    browser.storage.local.set({"webData": webData});
-                };
-                reader.readAsText(file);             
-
-            });
-        });
+    fetch(data_url).then(res => res.json()).then((out) => {
+        browser.storage.local.set({"webData": out});
     });
 })();
 
