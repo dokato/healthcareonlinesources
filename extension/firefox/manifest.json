@@ -1,0 +1,31 @@
+{
+  "name": "WHAT - Websites for Health Assessment Tool",
+  "short_name": "WHAT",
+  "version": "0.0.3",
+  "description": "This extension assesses trustfulness of medical sources based on users and medical experts votes.",
+  "icons": {
+    "64": "images/icon-def.png",
+    "128": "images/icon-logo.png"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Start",
+    "default_icon": {
+      "32": "images/icon-def.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "activeTab", "tabs", "storage", "notifications"
+  ],
+  "web_accessible_resources": [
+    "data/info.json"
+  ],
+  "manifest_version": 2
+}
