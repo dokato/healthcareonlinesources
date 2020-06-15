@@ -11,7 +11,7 @@ options(shiny.sanitize.errors = FALSE)
 
 ############
 
-collection_name <- "health_responses"
+collection_name <- "health_responses" #tc_ health_responses
 
 save_data <- function(data) {
     db <- mongo(collection = collection_name,
@@ -66,7 +66,9 @@ shinyServer(function(input, output, session) {
         if (input$password != options()$what_password) {
           showModal(verify_modal())
         } else {
-          save_data(c(input$website, input$slider, input$professional))
+          save_data(c(input$website, input$slider, input$professional,
+                     input$aims, input$achieve, input$references, input$when, input$biased, input$sources, input$uncertainty, 
+                     unlist(str_split(as.character(Sys.time())," ")))) 
           showModal(submitted_modal())
         }
       } else {
@@ -145,7 +147,6 @@ shinyServer(function(input, output, session) {
                            as.numeric(input$uncertainty)
             )
             score_list = score_list[! is.na(score_list)]
-            print(score_list)
             subjective_score = mean(score_list, na.rm=T)
         } else {    
             score_list = c(as.numeric(input$who) ,
@@ -168,3 +169,4 @@ shinyServer(function(input, output, session) {
     })
     
 })
+

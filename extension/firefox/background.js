@@ -1,9 +1,9 @@
 function changeIconBad(){
-    chrome.browserAction.setIcon({path: "images/icon-bad.png"});
+    browser.browserAction.setIcon({path: "images/icon-bad.png"});
 }
 
 function changeIconGood(){
-    chrome.browserAction.setIcon({path: "images/icon-good.png"});
+    browser.browserAction.setIcon({path: "images/icon-good.png"});
 }
 
 function compareUrl(url, request){
@@ -17,7 +17,7 @@ function compareUrl(url, request){
 }
 
 function notify() {
-    chrome.notifications.create({
+    browser.notifications.create({
         type:     'basic',
         iconUrl:  'images/icon-bad.png',
         title:    'WHAT reminder',
@@ -38,7 +38,7 @@ function changeIcon(score){
 
 function compareWithDataJSON(request) {
     // request must have url parameter
-    chrome.storage.local.get(['webData'], function(webData){
+    browser.storage.local.get(['webData'], function(webData){
         var comp = 0;
         for (const key in webData.webData) {
             comp = compareUrl(key, request);
@@ -53,31 +53,20 @@ function compareWithDataJSON(request) {
     })
 }
 
-const url = chrome.runtime.getURL('data/info.json');
+const data_url = browser.runtime.getURL('data/info.json');
 
 (function readJSON(){
-    chrome.runtime.getPackageDirectoryEntry(function(root) {
-        root.getFile("data/info.json", {}, function(fileEntry) {
-            fileEntry.file(function(file) {
-                var reader = new FileReader();
-                var flag = 0;
-                reader.onloadend = function(e) {
-                    var webData = JSON.parse(this.result);
-                    chrome.storage.local.set({"webData": webData});
-                };
-                reader.readAsText(file);             
-
-            });
-        });
+    fetch(data_url).then(res => res.json()).then((out) => {
+        browser.storage.local.set({"webData": out});
     });
 })();
 
-chrome.tabs.onActivated.addListener(function(activeInfo){
-    var tab = chrome.tabs.get(activeInfo.tabId, function(tab) {
+browser.tabs.onActivated.addListener(function(activeInfo){
+    var tab = browser.tabs.get(activeInfo.tabId, function(tab) {
         compareWithDataJSON(tab);
     })
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     compareWithDataJSON(request);
 });

@@ -53,11 +53,15 @@ shinyUI(tagList(
    tabPanel("Plugin",
      fluidPage(
        div(align = "center",
-           p("Download from Chrome Web Store!"),
+           p("Download from Chrome Web Store"),
            tags$b(tags$a(href="https://chrome.google.com/webstore/detail/what/maoedkipekbhpphphjmnmoccdgkkahfn",
-                  "+ Add WHAT to your browser now +",
+                  "+ Add WHAT to CHROME +",
                   target="_blank")),
-           br(), br(), tags$img(src="plugin.png")
+           p("or from Firefox Add-ons market"),
+           tags$b(tags$a(href="https://addons.mozilla.org/en-GB/firefox/addon/what/",
+                         "+ Add WHAT to Firefox +",
+                         target="_blank")),
+              br(), br(), tags$img(src="plugin.png")
        )
      )
    ),
