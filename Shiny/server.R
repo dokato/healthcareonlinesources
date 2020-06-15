@@ -107,7 +107,6 @@ shinyServer(function(input, output, session) {
         site = webtext()
         req(url.exists(site))
         good_tlds = c("gov", "org", "edu")
-        # bad_tlds = c("com")
         tld = strsplit(site, split="\\.")[[1]]
         tld = gsub("\\/.*", "", tld[length(tld)])
         if(tld %in% good_tlds){
@@ -117,18 +116,11 @@ shinyServer(function(input, output, session) {
                 " has top domain level '.",
                 tld,
                 "' which is recommended", "</b></font>")
-        # } else if(tld %in% bad_tlds){out_text = paste0(
-        #     "<font color=\"#DE4A2B\"><b>",
-        #     site,
-        #     " has top domain level '.",
-        #     tld,
-        #     "' that is bad.", "</b></font>")
         } else{out_text = paste0(
             "<font color=\"#EFBD0D\"><b>",
             site,
             " has top domain level '.",
             tld)}
-            # "' that is not ideal, we like uk, gov, org, edu etc.", "</b></font>")}
         
     })
     
