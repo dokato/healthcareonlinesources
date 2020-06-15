@@ -24,7 +24,7 @@ shinyUI(tagList(
             tagList(
               fluidPage(
                 div(align = "center",
-                    p("Thank you for being awesome and helping us scoring medical websites!"),
+                    p("Thank you for helping us to score websites for medical advice!"),
                     actionButton("block_one", "START SCORING")
                 ),
                 uiOutput("block_one"),

@@ -36,7 +36,7 @@ verify_modal <- function(){
   modalDialog(
     title = "You need to verify!",
     p("You need to verify to be able to submit as a healthcare professional."),
-    p("If you think, you are eligible, please drop us an email:"),
+    p("If you think you are eligible, please drop us an email:"),
     p(tags$b("WHAThealthonline@gmail.com")),
     p("asking for access."),
     easyClose = TRUE,
@@ -87,9 +87,9 @@ shinyServer(function(input, output, session) {
         site = webtext()
         if(grepl("http", site)) site = gsub("https://|http://", "", site)
         if(url.exists(site)){
-            out_text = glue("<font color=\"#0BB147\"><b>{site} website exists, hooray!</b></font>")
+            out_text = glue("<font color=\"#0BB147\"><b>{site} website exists</b></font>")
         } else {
-          out_text = glue("<font color=\"#DE4A2B\"><b>{site} seem to be not a valid website!</b></font>")
+          out_text = glue("<font color=\"#DE4A2B\"><b>{site} does not appear to be a valid website!</b></font>")
         }
     })
     
@@ -101,15 +101,14 @@ shinyServer(function(input, output, session) {
         if(url.exists(paste0("https://", site))){
             out_text = glue("<font color=\"#0BB147\"><b>{site} is secure  (https available)</b></font>")
         } else {
-          out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not a secure  (https unavailable)</b></font>")
+          out_text = glue("<font color=\"#DE4A2B\"><b>{site} is not secure  (https unavailable)</b></font>")
         }
     })
     
     output$tld = renderText({
         site = webtext()
         req(url.exists(site))
-        good_tlds = c("uk", "gov", "org", "edu")
-        bad_tlds = c("com")
+        good_tlds = c("gov", "org", "edu")
         tld = strsplit(site, split="\\.")[[1]]
         tld = gsub("\\/.*", "", tld[length(tld)])
         if(tld %in% good_tlds){
@@ -118,19 +117,12 @@ shinyServer(function(input, output, session) {
                 site,
                 " has top domain level '.",
                 tld,
-                "' thats good", "</b></font>")
-        } else if(tld %in% bad_tlds){out_text = paste0(
-            "<font color=\"#DE4A2B\"><b>",
-            site,
-            " has top domain level '.",
-            tld,
-            "' that is bad.", "</b></font>")
+                "' which is recommended", "</b></font>")
         } else{out_text = paste0(
             "<font color=\"#EFBD0D\"><b>",
             site,
             " has top domain level '.",
-            tld,
-            "' that is not ideal, we like uk, gov, org etc.", "</b></font>")}
+            tld)}
         
     })
     

@@ -8,7 +8,6 @@ div(class = 'container',
                        "Not Applicable/Don't Know" = "NA"), inline=TRUE,
                      selected = "NA"),
         
-        
         radioButtons("current", "2. Is this current?",
                      c("Yes" = "2",
                        "Somewhat" = "1",
