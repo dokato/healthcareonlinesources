@@ -133,12 +133,15 @@
 "www.wheelessonline.com" : 6,
 "www.who.int" : 9,
 "www.wikipedia.org" : 3,
-"www.wired.com" : 3.3,
+"wikipedia.org" : 3,
+"wired.com" : 3.3,
 "www.womansworld.com" : 1.25,
 "www.womens-health.co.uk" : 5,
 "www.womenshealthmag.com" : 2,
 "www.woolwarehouse.co.uk" : 1,
 "www.workingmother.com" : 5,
 "www.worldwidehealthcenter.net" : 0,
-"www.youtube.com" : 3
+"youtube.com" : 3,
+"youtu.be" : 3,
+"m.youtube.com" : 3
 }
